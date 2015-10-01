@@ -127,6 +127,7 @@ var WebCodeCamJS = function(element) {
         video.streamSrc(null);
         con.clearRect(0, 0, w, h);
         try {
+            localStream.stop();
             localStream.active = false;
             localStream.enabled = false;
         } catch (e) {}
