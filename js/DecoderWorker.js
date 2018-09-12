@@ -825,7 +825,11 @@ function BinaryConfiguration(binaryString, type) {
             binTemp = [];
             for (i = 0; i < totalBars; i++) {
                 binTemp.push(binaryString.splice(0, 1)[0]);
+<<<<<<< HEAD
+                binaryString.splice(0, 1);
+=======
                 // binaryString.splice(0, 1)[0];
+>>>>>>> refs/remotes/origin/master
             }
             result.push(binTemp);
             if (binaryString.length === 5) result.push(binaryString.splice(0, 5));
