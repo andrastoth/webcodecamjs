@@ -1,5 +1,9 @@
 /*!
+<<<<<<< HEAD
+ * WebCodeCamJQuery 2.5.0 jQuery plugin Bar code and QR code decoder
+=======
  * WebCodeCamJQuery 2.7.0 jQuery plugin Bar code and QR code decoder
+>>>>>>> refs/remotes/origin/master
  * Author: Tóth András
  * Web: http://atandrastoth.co.uk
  * email: atandrastoth@gmail.com

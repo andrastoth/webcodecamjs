@@ -41,8 +41,12 @@
         flipVerticalValue = Q("#flipVertical-value"),
         flipHorizontal = Q("#flipHorizontal"),
         flipHorizontalValue = Q("#flipHorizontal-value");
+    var resultArray = [];
     var args = {
-        autoBrightnessValue: 100,
+        autoBrightnessValue: false,
+        decodeQRCodeRate: 2,
+        decodeBarCodeRate: 2,
+        frameRate: 5,
         resultFunction: function(res) {
             [].forEach.call(scannerLaser, function(el) {
                 fadeOut(el, 0.5);
