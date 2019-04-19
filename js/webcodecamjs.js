@@ -583,7 +583,7 @@ var WebCodeCamJS = function(element) {
             qrcode.sourceCanvas = display;
             initialized = true;
             setEventListeners();
-            DecodeWorker = new Worker(options.decoderWorker);
+            DecodeWorker = options.decodeBarCodeRate > 0 ? new Worker(options.decoderWorker) : { };
             if (options.decodeQRCodeRate || options.decodeBarCodeRate) {
                 setCallBack();
             }
