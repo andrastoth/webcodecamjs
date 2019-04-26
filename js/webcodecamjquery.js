@@ -29,7 +29,7 @@
     };
     var Self, display, videoSelect, lastImageSrc, con, beepSound, w, h, lastCode,
         DecodeWorker = null,
-        video = $('<video muted autoplay></video>')[0],
+        video = $('<video muted autoplay playsinline></video>')[0],
         sucessLocalDecode = false,
         localImage = false,
         flipMode = [1, 3, 6, 8],
@@ -477,7 +477,7 @@
                 default:
                     if (navigator.userAgent.search("Edge") == -1 && navigator.userAgent.search("Chrome") != -1) {
                         constraints.video.optional = [{
-                            sourceId: videoSelect[videoSelect.selectedIndex].value
+                            sourceId: videoSelect.val()
                         }];
                     } else if (navigator.userAgent.search("Firefox") != -1) {
                         constraints.video.deviceId = {
