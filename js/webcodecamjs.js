@@ -28,6 +28,7 @@ var WebCodeCamJS = function(element) {
         }
     };
     var videoSelect, lastImageSrc, con, beepSound, w, h, lastCode;
+    var videoSelectBuildInProgress = false;
     var display = Q(element),
         DecodeWorker = null,
         video = html('<video muted autoplay playsinline></video>'),
@@ -408,6 +409,7 @@ var WebCodeCamJS = function(element) {
     function buildSelectMenu(selectorVideo, ind) {
         videoSelect = Q(selectorVideo);
         videoSelect.innerHTML = '';
+        videoSelectBuildInProgress = true;
         try {
             if (mediaDevices && mediaDevices.enumerateDevices) {
                 mediaDevices.enumerateDevices().then(function(devices) {
@@ -425,15 +427,19 @@ var WebCodeCamJS = function(element) {
                     }
                 }).catch(function(error) {
                     options.getDevicesError(error);
+                }).finally(function() {
+                    videoSelectBuildInProgress = false;
                 });
             } else if (mediaDevices && !mediaDevices.enumerateDevices) {
                 html('<option value="true">On</option>', videoSelect);
                 options.getDevicesError(new NotSupportError('enumerateDevices Or getSources is Not supported'));
+                videoSelectBuildInProgress = false;
             } else {
                 throw new NotSupportError('getUserMedia is Not supported');
             }
         } catch (error) {
             options.getDevicesError(error);
+            videoSelectBuildInProgress = false;
         }
     }
 
@@ -591,7 +597,14 @@ var WebCodeCamJS = function(element) {
         },
         play: function() {
             localImage = false;
-            setTimeout(play, 100);
+            function waitUntilVideoSelectReady() {
+                if (videoSelectBuildInProgress) {
+                    setTimeout(waitUntilVideoSelectReady, 100);
+                } else {
+                    play();
+                }
+            }
+            waitUntilVideoSelectReady();
             return this;
         },
         stop: function() {
