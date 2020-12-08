@@ -1,6 +1,6 @@
 /*!
  * WebCodeCamJS 2.7.0 javascript Bar code and QR code decoder 
- * Author: Tóth András
+ * Author: TÃ³th AndrÃ¡s
  * Web: http://atandrastoth.co.uk
  * email: atandrastoth@gmail.com
  * Licensed under the MIT license
@@ -10,14 +10,14 @@ var WebCodeCamJS = function(element) {
     this.Version = {
         name: 'WebCodeCamJS',
         version: '2.7.0',
-        author: 'Tóth András',
+        author: 'TÃ³th AndrÃ¡s',
     };
     var mediaDevices = window.navigator.mediaDevices;
     mediaDevices.getUserMedia = function(c) {
         return new Promise(function(y, n) {
             (window.navigator.getUserMedia || window.navigator.mozGetUserMedia || window.navigator.webkitGetUserMedia).call(navigator, c, y, n);
         });
-    }
+    };
     HTMLVideoElement.prototype.streamSrc = ('srcObject' in HTMLVideoElement.prototype) ? function(stream) {
         this.srcObject = !!stream ? stream : null;
     } : function(stream) {
@@ -30,7 +30,7 @@ var WebCodeCamJS = function(element) {
     var videoSelect, lastImageSrc, con, beepSound, w, h, lastCode;
     var display = Q(element),
         DecodeWorker = null,
-        video = html('<video muted autoplay playsinline></video>'),
+        video = html('<video muted autoplay></video>'),
         sucessLocalDecode = false,
         localImage = false,
         flipMode = [1, 3, 6, 8],
@@ -57,7 +57,7 @@ var WebCodeCamJS = function(element) {
                         sourceId: true
                     }]
                 },
-                audio: false,
+                audio: false
             },
             flipVertical: false,
             flipHorizontal: false,
@@ -91,6 +91,7 @@ var WebCodeCamJS = function(element) {
         };
 
     function init() {
+        
         var constraints = changeConstraints();
         try {
             mediaDevices.getUserMedia(constraints).then(cameraSuccess).catch(function(error) {
@@ -450,7 +451,11 @@ var WebCodeCamJS = function(element) {
         if (videoSelect && videoSelect.length !== 0) {
             switch (videoSelect[videoSelect.selectedIndex].value.toString()) {
                 case 'true':
-                    if (navigator.userAgent.search("Edge") == -1 && navigator.userAgent.search("Chrome") != -1) {
+                    if (navigator.userAgent.match("Mac")) {
+                        constraints.video = {
+                           facingMode: "environment"
+                        };
+                    } else if (!navigator.userAgent.match("Edge") && navigator.userAgent.match("Chrome")) {
                         constraints.video.optional = [{
                             sourceId: true
                         }];
@@ -462,11 +467,15 @@ var WebCodeCamJS = function(element) {
                     constraints.video = false;
                     break;
                 default:
-                    if (navigator.userAgent.search("Edge") == -1 && navigator.userAgent.search("Chrome") != -1) {
+                    if (navigator.userAgent.match("Mac")) {
+                        constraints.video = {
+                            facingMode: (videoSelect[videoSelect.selectedIndex].value.match("user") ? "user" :  "environment") 
+                        };
+                    } else if (!navigator.userAgent.match("Edge") && navigator.userAgent.match("Chrome")) {
                         constraints.video.optional = [{
                             sourceId: videoSelect[videoSelect.selectedIndex].value
                         }];
-                    } else if (navigator.userAgent.search("Firefox") != -1) {
+                    } else if (navigator.userAgent.match("Firefox")) {
                         constraints.video.deviceId = {
                             exact: videoSelect[videoSelect.selectedIndex].value
                         };
@@ -617,9 +626,6 @@ var WebCodeCamJS = function(element) {
         },
         isInitialized: function() {
             return initialized;
-        },
-        getWorker: function () {
-            return DecodeWorker;
         },
         options: options
     };
